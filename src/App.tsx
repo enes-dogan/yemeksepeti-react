@@ -1,9 +1,13 @@
+import Header from './components/Header.tsx';
+import Meals from './components/Meals.tsx';
+import Cart from './components/Cart.tsx';
+
 function App() {
   return (
     <>
-      <div>
-        <h1>YemekSepeti</h1>
-      </div>
+      <Header />
+      <Meals />
+      <Cart />
     </>
   );
 }
