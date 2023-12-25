@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Meals } from '../types';
 
+import Button from './UI/Button.tsx';
+
 function Meals() {
   const [meals, setMeals] = useState<Meals[]>([]);
 
@@ -29,12 +31,10 @@ function Meals() {
               <p className="meal-item-description">{meal.description}</p>
             </div>
             <p className="meal-item-actions">
-              <button
-                className="button undefined"
+              <Button
+                text="Add to Cart"
                 onClick={() => handleAddToCart(meal.id)}
-              >
-                Add to Cart
-              </button>
+              />
             </p>
           </article>
         </li>

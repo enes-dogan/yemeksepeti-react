@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-import { ModalProps } from '../types';
+import { ModalProps } from '../../types';
 
 const Modal = forwardRef(function ({ children, cssClasses }: ModalProps, ref) {
   const classes = `${cssClasses ? cssClasses : ''} modal`;

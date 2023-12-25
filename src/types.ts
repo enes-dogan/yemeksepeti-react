@@ -40,6 +40,7 @@ export interface InputProps
 export interface ButtonProps {
   children?: React.ReactNode;
   text?: string;
+  type?: 'button' | 'submit' | 'reset' | undefined;
   style?: 'text-button';
   onClick?: () => void;
 }
