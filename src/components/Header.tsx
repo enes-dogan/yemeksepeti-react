@@ -1,6 +1,14 @@
+import { HeaderProps } from '../types';
+
+import Button from './UI/Button';
+
 import logoImg from '../assets/logo.jpg';
 
-function Header() {
+function Header({ onToggleCart }: HeaderProps) {
+  function handleCartClick() {
+    onToggleCart();
+  }
+
   return (
     <header id="main-header">
       <div id="title">
@@ -8,7 +16,9 @@ function Header() {
         <h1>Yemeksepeti</h1>
       </div>
       <nav>
-        <button className="text-button undefined">Cart(0)</button>
+        <Button style="text-button" onClick={handleCartClick}>
+          Cart ({0})
+        </Button>
       </nav>
     </header>
   );

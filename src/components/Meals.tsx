@@ -1,72 +1,44 @@
-import logoImg from '../assets/logo.jpg';
+import { useEffect, useState } from 'react';
+import { Meals } from '../types';
 
 function Meals() {
+  const [meals, setMeals] = useState<Meals[]>([]);
+
+  useEffect(() => {
+    async function fetchMeals() {
+      const response = await fetch('http://localhost:3000/meals');
+      const resData = await response.json();
+      setMeals(resData);
+    }
+    fetchMeals();
+  }, []);
+
+  function handleAddToCart(id: string) {
+    console.log(id);
+  }
+
   return (
     <ul id="meals">
-      <li className="meal-item">
-        <article>
-          <img src={logoImg} />
-          <div>
-            <h3>Grilled Chicken Sandwich</h3>
-            <p className="meal-item-price">$15.53</p>
-            <p className="meal-item-description">
-              Tender grilled chicken breast with avocado, bacon, lettuce, and
-              honey mustard on a toasted bun.
+      {meals.map(meal => (
+        <li key={meal.id} className="meal-item">
+          <article>
+            <img src={`http://localhost:3000/${meal.image}`} />
+            <div>
+              <h3>{meal.name}</h3>
+              <p className="meal-item-price">${meal.price}</p>
+              <p className="meal-item-description">{meal.description}</p>
+            </div>
+            <p className="meal-item-actions">
+              <button
+                className="button undefined"
+                onClick={() => handleAddToCart(meal.id)}
+              >
+                Add to Cart
+              </button>
             </p>
-          </div>
-          <p className="meal-item-actions">
-            <button className="button undefined">Add to Cart</button>
-          </p>
-        </article>
-      </li>
-      <li className="meal-item">
-        <article>
-          <img src={logoImg} />
-          <div>
-            <h3>Grilled Chicken Sandwich</h3>
-            <p className="meal-item-price">$15.53</p>
-            <p className="meal-item-description">
-              Tender grilled chicken breast with avocado, bacon, lettuce, and
-              honey mustard on a toasted bun.
-            </p>
-          </div>
-          <p className="meal-item-actions">
-            <button className="button undefined">Add to Cart</button>
-          </p>
-        </article>
-      </li>
-      <li className="meal-item">
-        <article>
-          <img src={logoImg} />
-          <div>
-            <h3>Grilled Chicken Sandwich</h3>
-            <p className="meal-item-price">$15.53</p>
-            <p className="meal-item-description">
-              Tender grilled chicken breast with avocado, bacon, lettuce, and
-              honey mustard on a toasted bun.
-            </p>
-          </div>
-          <p className="meal-item-actions">
-            <button className="button undefined">Add to Cart</button>
-          </p>
-        </article>
-      </li>
-      <li className="meal-item">
-        <article>
-          <img src={logoImg} />
-          <div>
-            <h3>Grilled Chicken Sandwich</h3>
-            <p className="meal-item-price">$15.53</p>
-            <p className="meal-item-description">
-              Tender grilled chicken breast with avocado, bacon, lettuce, and
-              honey mustard on a toasted bun.
-            </p>
-          </div>
-          <p className="meal-item-actions">
-            <button className="button undefined">Add to Cart</button>
-          </p>
-        </article>
-      </li>
+          </article>
+        </li>
+      ))}
     </ul>
   );
 }
