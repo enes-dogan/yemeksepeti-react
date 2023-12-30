@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Meals } from '../types';
+import { Meals } from '../types.ts';
+import { currencyFormatter } from '../util/formatting.ts';
 
 import Button from './UI/Button.tsx';
 
@@ -12,7 +13,7 @@ function Meals() {
       const resData = await response.json();
       setMeals(resData);
     }
-    fetchMeals();
+    void fetchMeals();
   }, []);
 
   function handleAddToCart(id: string) {
@@ -27,7 +28,9 @@ function Meals() {
             <img src={`http://localhost:3000/${meal.image}`} />
             <div>
               <h3>{meal.name}</h3>
-              <p className="meal-item-price">${meal.price}</p>
+              <p className="meal-item-price">
+                {currencyFormatter.format(parseFloat(meal.price))}
+              </p>
               <p className="meal-item-description">{meal.description}</p>
             </div>
             <p className="meal-item-actions">

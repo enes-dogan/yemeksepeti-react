@@ -5,7 +5,6 @@ export interface Meals {
   description: string;
   image: string;
 }
-
 export interface ModalProps {
   children: React.ReactNode;
   cssClasses?: string;
@@ -44,3 +43,12 @@ export interface ButtonProps {
   style?: 'text-button';
   onClick?: () => void;
 }
+
+export interface CartModalProps {
+  title: string;
+  actions: React.ReactNode;
+}
+
+export type cartReducerActionType =
+  | { type: 'ADD_ITEM'; payload: string }
+  | { type: 'UPDATE_ITEM'; payload: { productId: string; amount: number } };

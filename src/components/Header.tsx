@@ -1,6 +1,6 @@
-import { HeaderProps } from '../types';
+import { HeaderProps } from '../types.ts';
 
-import Button from './UI/Button';
+import Button from './UI/Button.tsx';
 
 import logoImg from '../assets/logo.jpg';
 
