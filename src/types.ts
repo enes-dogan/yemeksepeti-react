@@ -1,10 +1,16 @@
-export interface Meals {
+export interface MealType {
   id: string;
   name: string;
   price: string;
   description: string;
   image: string;
+  quantity?: number;
 }
+
+export interface childrenProp {
+  children: React.ReactNode;
+}
+
 export interface ModalProps {
   children: React.ReactNode;
   cssClasses?: string;

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import CartContextProvider from './store/CartContext.tsx';
 
 import Header from './components/Header.tsx';
 import Meals from './components/Meals.tsx';
@@ -17,7 +18,7 @@ function App() {
   }
 
   return (
-    <>
+    <CartContextProvider>
       <Header onToggleCart={toggleCartOpen} />
       <Meals />
       <Cart
@@ -26,7 +27,7 @@ function App() {
         onToggleCheckout={toggleGoCheckout}
       />
       <Checkout goCheckout={goCheckout} onToggleCheckout={toggleGoCheckout} />
-    </>
+    </CartContextProvider>
   );
 }
 

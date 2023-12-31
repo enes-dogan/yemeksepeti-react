@@ -1,17 +1,14 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { MealType } from '../types.ts';
 
-export async function fetchMeals(url = 'meals') {
-  const response = await fetch('http://localhost:3000/' + url);
+async function fetchMeals() {
+  const response = await fetch('http://localhost:3000/meals');
   const resData = await response.json();
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${url}`);
-  }
-
-  return resData.meals;
+  return resData;
 }
 
-export function useHttp(fetchParam) {
+export function useHttp(initialData: MealType[] | [] = []) {
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState({ message: '' });
   const [fetchedData, setFetchedData] = useState(initialData);
@@ -20,7 +17,7 @@ export function useHttp(fetchParam) {
     async function fetchFn() {
       setIsFetching(true);
       try {
-        const data = await fetchMeals(fetchParam);
+        const data = await fetchMeals();
         setFetchedData(data);
       } catch (error) {
         console.error(error);
@@ -32,7 +29,7 @@ export function useHttp(fetchParam) {
     }
 
     void fetchFn();
-  }, [fetchParam]);
+  }, []);
 
   return { isFetching, error, setError, fetchedData, setFetchedData };
 }
