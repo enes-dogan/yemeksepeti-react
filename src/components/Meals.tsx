@@ -1,17 +1,17 @@
-import { useContext } from 'react';
-import { CartContext } from '../store/CartContext.tsx';
-import { currencyFormatter } from '../util/formatting.ts';
+// import { useContext } from 'react';
+// import { CartContext } from '../store/CartContext.tsx';
+// import { currencyFormatter } from '../util/formatting.ts';
 
-import Button from './UI/Button.tsx';
+// import Button from './UI/Button.tsx';
 
 function Meals() {
-  const { meals, cart, addToCart, isFetching } = useContext(CartContext);
+  // const { meals, cart, addToCart, isFetching } = useContext(CartContext);
 
-  console.log(cart);
+  // console.log(cart);
 
   return (
     <ul id="meals">
-      {isFetching && (
+      {/* {isFetching && (
         <div>
           <p>Loading Meals.</p>
         </div>
@@ -39,7 +39,7 @@ function Meals() {
               </p>
             </article>
           </li>
-        ))}
+        ))} */}
     </ul>
   );
 }
