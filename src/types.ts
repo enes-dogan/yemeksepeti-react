@@ -38,6 +38,10 @@ export interface CartProps {
   onToggleCheckout: () => void;
 }
 
+export interface CartItemProps {
+  item: MealType;
+}
+
 export interface CheckoutProps {
   goCheckout: boolean;
   onToggleCheckout: () => void;

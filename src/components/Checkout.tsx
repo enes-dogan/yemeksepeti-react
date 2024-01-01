@@ -1,4 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
+import CartContext from '../store/CartContext.tsx';
+
+import { currencyFormatter } from '../util/formatting.ts';
 import { ModalRef, CheckoutProps } from '../types.ts';
 
 import Modal from './UI/Modal.tsx';
@@ -6,7 +9,13 @@ import Input from './UI/Input.tsx';
 import Button from './UI/Button.tsx';
 
 function Checkout({ goCheckout, onToggleCheckout }: CheckoutProps) {
+  const { items } = useContext(CartContext);
   const dialog = useRef<ModalRef>(null);
+
+  const cartTotalPrice = items.reduce(
+    (acc, item) => acc + parseFloat(item.price) * item.quantity!,
+    0
+  );
 
   if (goCheckout) {
     dialog.current!.open();
@@ -25,15 +34,15 @@ function Checkout({ goCheckout, onToggleCheckout }: CheckoutProps) {
 
     console.log(data);
 
-    // event.currentTarget.reset();
-    // handleCloseModal();
+    event.currentTarget.reset();
+    handleCloseModal();
   }
 
   return (
     <Modal ref={dialog}>
       <form onSubmit={handleSubmit}>
         <h2>Checkout</h2>
-        <p>Total Amount: $7.99</p>
+        <p>Total Amount: {currencyFormatter.format(cartTotalPrice)}</p>
         <Input label="Full Name" id="name" name="name" />
         <Input label="E-Mail Address" id="email" type="email" name="email" />
         <Input label="Street" id="street" name="street" />

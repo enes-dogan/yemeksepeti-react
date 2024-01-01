@@ -1,33 +1,24 @@
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
+import CartContext from '../store/CartContext.tsx';
 
+import { currencyFormatter } from '../util/formatting.ts';
 import { ModalRef, CartProps } from '../types.ts';
 
+import CartItem from './CartItem.tsx';
 import Modal from './UI/Modal.tsx';
 import Button from './UI/Button.tsx';
 
-const DUMMY_CART_ITEMS = [
-  {
-    id: 'm3',
-    name: 'Caesar Salad',
-    price: '7.99',
-    description:
-      'Romaine lettuce tossed in Caesar dressing, topped with croutons and parmesan shavings.',
-    image: 'images/caesar-salad.jpg',
-  },
-  {
-    id: 'm4',
-    name: 'Spaghetti Carbonara',
-    price: '10.99',
-    description:
-      'Al dente spaghetti with a creamy sauce made from egg yolk, pecorino cheese, pancetta, and pepper.',
-    image: 'images/spaghetti-carbonara.jpg',
-  },
-];
+function Cart({ cartOpen, isOpen, onToggleCart, onToggleCheckout }: CartProps) {
+  const { items } = useContext(CartContext);
 
-function Cart({ cartOpen, onToggleCart, onToggleCheckout }: CartProps) {
+  const cartTotalPrice = items.reduce(
+    (acc, item) => acc + parseFloat(item.price) * item.quantity!,
+    0
+  );
+
   const dialog = useRef<ModalRef>(null);
 
-  if (cartOpen) {
+  if (isOpen === 'cartOpen') {
     dialog.current!.open();
     onToggleCart();
   }
@@ -45,23 +36,16 @@ function Cart({ cartOpen, onToggleCart, onToggleCheckout }: CartProps) {
     <Modal ref={dialog} cssClasses="cart">
       <h2>Your Cart</h2>
       <ul>
-        {DUMMY_CART_ITEMS.map(item => (
-          <li key={item.id} className="cart-item">
-            <p>
-              {item.name} - 3 X ${item.price}
-            </p>
-            <p className="cart-item-actions">
-              <button>-</button>
-              <span>3</span>
-              <button>+</button>
-            </p>
-          </li>
+        {items.map(item => (
+          <CartItem key={item.id} item={item} />
         ))}
       </ul>
-      <p className="cart-total">$289.73</p>
+      <p className="cart-total">{currencyFormatter.format(cartTotalPrice)}</p>
       <p className="modal-actions">
         <Button text="Close" style="text-button" onClick={handleCloseModal} />
-        <Button onClick={handleGoCheckout}>Go to Checkout</Button>
+        {items.length > 0 && (
+          <Button onClick={handleGoCheckout}>Go to Checkout</Button>
+        )}
       </p>
     </Modal>
   );
