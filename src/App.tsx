@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import CartContextProvider from './store/CartContext.tsx';
+import { CartContextProvider } from './store/CartContext.tsx';
 
 import Header from './components/Header.tsx';
 import Meals from './components/Meals.tsx';

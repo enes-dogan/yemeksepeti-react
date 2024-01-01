@@ -7,6 +7,23 @@ export interface MealType {
   quantity?: number;
 }
 
+export interface CartContextParams {
+  items: MealType[] | [];
+  addItem: (item: MealType) => void;
+  removeItem: (id: string) => void;
+}
+
+type CartState = { items: MealType[] };
+
+type cartReducerActionType =
+  | { type: 'ADD_ITEM'; item: MealType }
+  | { type: 'REMOVE_ITEM'; id: string };
+
+export type cartReducerFn = (
+  state: CartState,
+  action: cartReducerActionType
+) => CartState;
+
 export interface childrenProp {
   children: React.ReactNode;
 }
@@ -54,7 +71,3 @@ export interface CartModalProps {
   title: string;
   actions: React.ReactNode;
 }
-
-export type cartReducerActionType =
-  | { type: 'ADD_ITEM'; payload: string }
-  | { type: 'UPDATE_ITEM'; payload: { productId: string; amount: number } };
