@@ -5,15 +5,24 @@ import { currencyFormatter } from '../util/formatting.ts';
 import Button from './UI/Button.tsx';
 
 function Meals() {
-  const { cart, addToCart, meals } = useContext(CartContext);
+  const { meals, cart, addToCart, isFetching } = useContext(CartContext);
 
   console.log(cart);
-  console.log(meals);
 
   return (
     <ul id="meals">
-      {meals.length === 0 && <p>No meals yet.</p>}
-      {meals.length > 0 &&
+      {isFetching && (
+        <div>
+          <p>Loading Meals.</p>
+        </div>
+      )}
+      {!isFetching && meals.length === 0 && (
+        <div>
+          <p>No meals yet.</p>
+        </div>
+      )}
+      {!isFetching &&
+        meals.length > 0 &&
         meals.map(meal => (
           <li key={meal.id} className="meal-item">
             <article>

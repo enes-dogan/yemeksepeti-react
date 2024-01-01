@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+
 import { ModalRef, CartProps } from '../types.ts';
 
 import Modal from './UI/Modal.tsx';

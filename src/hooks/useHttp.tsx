@@ -3,9 +3,12 @@ import { MealType } from '../types.ts';
 
 async function fetchMeals() {
   const response = await fetch('http://localhost:3000/meals');
-  const resData = await response.json();
 
-  return resData;
+  if (response.ok) {
+    const resData = await response.json();
+
+    return resData;
+  }
 }
 
 export function useHttp(initialData: MealType[] | [] = []) {
@@ -31,5 +34,5 @@ export function useHttp(initialData: MealType[] | [] = []) {
     void fetchFn();
   }, []);
 
-  return { isFetching, error, setError, fetchedData, setFetchedData };
+  return { isFetching, error, setError, fetchedData };
 }

@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState } from 'react';
 import { MealType, childrenProp } from '../types.ts';
 import { useHttp } from '../hooks/useHttp.tsx';
 
@@ -6,25 +6,24 @@ interface CartContextParams {
   meals: MealType[] | [];
   cart: string[];
   addToCart: (id: string) => void;
+  isFetching: boolean;
+  error: { message: string | null };
+  setError: (error: { message: string }) => void;
 }
 
 export const CartContext = createContext<CartContextParams>({
   meals: [],
   cart: [],
-  addToCart: id => {
-    id;
-  },
+  addToCart: () => {},
+  isFetching: false,
+  error: { message: '' },
+  setError: () => {},
 });
 
 export default function CartContextProvider({ children }: childrenProp) {
-  const [cart, setCart] = useState(['m0']);
-  const [meals, setMeals] = useState([]);
+  const [cart, setCart] = useState<string[]>([]);
 
-  const { fetchedData } = useHttp();
-
-  useEffect(() => {
-    setMeals(fetchedData as []);
-  }, [fetchedData]);
+  const { fetchedData, isFetching, error, setError } = useHttp();
 
   function handleAddToCart(id: string) {
     setCart(prevCart => {
@@ -34,10 +33,14 @@ export default function CartContextProvider({ children }: childrenProp) {
   }
 
   const CartCtx = {
-    meals: meals,
+    meals: fetchedData,
     cart,
     addToCart: handleAddToCart,
+    isFetching,
+    error,
+    setError,
   };
+
   return (
     <CartContext.Provider value={CartCtx}>{children}</CartContext.Provider>
   );
