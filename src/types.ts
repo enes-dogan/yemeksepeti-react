@@ -24,23 +24,12 @@ export type cartReducerFn = (
   action: cartReducerActionType
 ) => CartState;
 
-export interface childrenProp {
-  children: React.ReactNode;
-}
-
-export interface ModalProps {
-  children: React.ReactNode;
-  cssClasses?: string;
-}
-
-export interface ModalRef {
-  modal: HTMLDialogElement | null;
-  open: () => void;
-  close: () => void;
-}
-
 export interface HeaderProps {
   onToggleCart: () => void;
+}
+
+export interface MealItemProps {
+  meal: MealType;
 }
 
 export interface CartProps {
@@ -52,6 +41,17 @@ export interface CartProps {
 export interface CheckoutProps {
   goCheckout: boolean;
   onToggleCheckout: () => void;
+}
+
+export interface ModalProps {
+  children: React.ReactNode;
+  cssClasses?: string;
+}
+
+export interface ModalRef {
+  modal: HTMLDialogElement | null;
+  open: () => void;
+  close: () => void;
 }
 
 export interface InputProps
@@ -67,7 +67,6 @@ export interface ButtonProps {
   onClick?: () => void;
 }
 
-export interface CartModalProps {
-  title: string;
-  actions: React.ReactNode;
+export interface childrenProp {
+  children: React.ReactNode;
 }

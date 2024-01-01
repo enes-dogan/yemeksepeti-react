@@ -1,5 +1,5 @@
-// import { useContext } from 'react';
-// import { CartContext } from '../store/CartContext.tsx';
+import { useContext } from 'react';
+import CartContext from '../store/CartContext.tsx';
 
 import { HeaderProps } from '../types.ts';
 
@@ -7,9 +7,9 @@ import Button from './UI/Button.tsx';
 import logoImg from '../assets/logo.jpg';
 
 function Header({ onToggleCart }: HeaderProps) {
-  // const { cart } = useContext(CartContext);
+  const { items } = useContext(CartContext);
 
-  // const cartItemQuantity = cart.length;
+  const allItemsQuantity = items.reduce((acc, item) => acc + item.quantity!, 0);
 
   function handleCartClick() {
     onToggleCart();
@@ -23,7 +23,7 @@ function Header({ onToggleCart }: HeaderProps) {
       </div>
       <nav>
         <Button style="text-button" onClick={handleCartClick}>
-          {/* Cart ({cartItemQuantity}) */}
+          Cart ({allItemsQuantity})
         </Button>
       </nav>
     </header>
