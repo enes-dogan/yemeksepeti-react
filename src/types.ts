@@ -9,6 +9,11 @@ export interface MealType {
 
 export type cartStatusTypes = 'CLOSE' | 'CART' | 'CHECKOUT' | 'SUBMIT';
 
+export interface UserProgressContextType {
+  onCartStatusChange: (status: cartStatusTypes) => void;
+  cartStatus: cartStatusTypes;
+}
+
 export interface CartContextParams {
   items: MealType[] | [];
   addItem: (item: MealType) => void;
@@ -30,20 +35,9 @@ export interface MealItemProps {
   meal: MealType;
 }
 
-export interface HeaderProps {
-  onCartStatusChange: (status: cartStatusTypes) => void;
-}
-
-export interface CartProps {
-  cartStatus: cartStatusTypes;
-  onCartStatusChange: (status: cartStatusTypes) => void;
-}
-
 export interface CartItemProps {
   item: MealType;
 }
-
-export interface CheckoutProps extends CartProps {}
 
 export interface ModalProps {
   children: React.ReactNode;

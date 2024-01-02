@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 import CartContext from '../store/CartContext.tsx';
-
-import { HeaderProps } from '../types.ts';
+import UserProgressContext from '../store/UserProgressContext.tsx';
 
 import Button from './UI/Button.tsx';
 import logoImg from '../assets/logo.jpg';
 
-function Header({ onCartStatusChange }: HeaderProps) {
+function Header() {
   const { items } = useContext(CartContext);
+  const { onCartStatusChange } = useContext(UserProgressContext);
 
   const allItemsQuantity = items.reduce((acc, item) => acc + item.quantity!, 0);
 

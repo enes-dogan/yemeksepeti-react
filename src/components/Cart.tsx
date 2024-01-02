@@ -1,15 +1,17 @@
 import { useRef, useContext, useEffect } from 'react';
 import CartContext from '../store/CartContext.tsx';
+import UserProgressContext from '../store/UserProgressContext.tsx';
 
 import { currencyFormatter } from '../util/formatting.ts';
-import { ModalRef, CartProps } from '../types.ts';
+import { ModalRef } from '../types.ts';
 
 import CartItem from './CartItem.tsx';
 import Modal from './UI/Modal.tsx';
 import Button from './UI/Button.tsx';
 
-function Cart({ cartStatus, onCartStatusChange }: CartProps) {
+function Cart() {
   const { items } = useContext(CartContext);
+  const { cartStatus, onCartStatusChange } = useContext(UserProgressContext);
   const dialog = useRef<ModalRef>(null);
 
   const cartTotalPrice = items.reduce(

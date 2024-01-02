@@ -1,15 +1,18 @@
 import { useRef, useContext, useEffect } from 'react';
 import CartContext from '../store/CartContext.tsx';
+import UserProgressContext from '../store/UserProgressContext.tsx';
 
 import { currencyFormatter } from '../util/formatting.ts';
-import { ModalRef, CheckoutProps } from '../types.ts';
+import { ModalRef } from '../types.ts';
 
 import Modal from './UI/Modal.tsx';
 import Input from './UI/Input.tsx';
 import Button from './UI/Button.tsx';
 
-function Checkout({ cartStatus, onCartStatusChange }: CheckoutProps) {
-  const { items } = useContext(CartContext);
+function Checkout() {
+  const { items, removeItem } = useContext(CartContext);
+  const { cartStatus, onCartStatusChange } = useContext(UserProgressContext);
+
   const dialog = useRef<ModalRef>(null);
 
   const cartTotalPrice = items.reduce(
@@ -30,11 +33,18 @@ function Checkout({ cartStatus, onCartStatusChange }: CheckoutProps) {
     event.preventDefault();
 
     const fd = new FormData(event.target as HTMLFormElement);
-    const data = Object.fromEntries(fd.entries());
+    const customer = Object.fromEntries(fd.entries());
 
-    console.log(data);
+    const order = { ...items, customer, id: Math.random() * 100 };
 
-    event.currentTarget.reset();
+    console.log(order);
+
+    items.forEach(item => {
+      for (let i = 0; i < item.quantity!; i++) {
+        removeItem(item.id);
+      }
+    });
+
     onCartStatusChange('SUBMIT');
   }
 
@@ -42,7 +52,6 @@ function Checkout({ cartStatus, onCartStatusChange }: CheckoutProps) {
     <Modal ref={dialog}>
       {cartStatus === 'SUBMIT' ? (
         <>
-          {' '}
           <h2>Success!</h2>
           <p>Your order was submitted successfully.</p>
           <p>
@@ -50,7 +59,7 @@ function Checkout({ cartStatus, onCartStatusChange }: CheckoutProps) {
             few minutes.
           </p>
           <p className="modal-actions">
-            <Button text="Okay" onClick={() => onCartStatusChange('CLOSE')} />
+            <Button text="Okay" onClick={handleCloseModal} />
           </p>
         </>
       ) : (
