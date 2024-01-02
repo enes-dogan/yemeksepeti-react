@@ -1,9 +1,8 @@
-import { useRef, useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import CartContext from '../store/CartContext.tsx';
 import UserProgressContext from '../store/UserProgressContext.tsx';
 
 import { currencyFormatter } from '../util/formatting.ts';
-import { ModalRef } from '../types.ts';
 
 import CartItem from './CartItem.tsx';
 import Modal from './UI/Modal.tsx';
@@ -12,17 +11,11 @@ import Button from './UI/Button.tsx';
 function Cart() {
   const { items } = useContext(CartContext);
   const { cartStatus, onCartStatusChange } = useContext(UserProgressContext);
-  const dialog = useRef<ModalRef>(null);
 
   const cartTotalPrice = items.reduce(
     (acc, item) => acc + parseFloat(item.price) * item.quantity!,
     0
   );
-
-  useEffect(() => {
-    if (cartStatus === 'CART') dialog.current!.open();
-    if (cartStatus === 'CLOSE') dialog.current!.close();
-  }, [cartStatus]);
 
   function handleGoCheckout() {
     onCartStatusChange('CHECKOUT');
@@ -33,7 +26,7 @@ function Cart() {
   }
 
   return (
-    <Modal ref={dialog} cssClasses="cart">
+    <Modal cssClasses="cart" open={cartStatus === 'CART'}>
       <h2>Your Cart</h2>
       <ul>
         {items.map(item => (

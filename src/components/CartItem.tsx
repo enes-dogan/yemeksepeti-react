@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import CartContext from '../store/CartContext.tsx';
-
 import { CartItemProps } from '../types';
 
 function CartItem({ item }: CartItemProps) {

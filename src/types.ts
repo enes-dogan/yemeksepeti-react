@@ -42,12 +42,7 @@ export interface CartItemProps {
 export interface ModalProps {
   children: React.ReactNode;
   cssClasses?: string;
-}
-
-export interface ModalRef {
-  modal: HTMLDialogElement | null;
-  open: () => void;
-  close: () => void;
+  open: boolean;
 }
 
 export interface InputProps

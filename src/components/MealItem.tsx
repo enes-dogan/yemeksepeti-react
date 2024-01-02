@@ -1,8 +1,9 @@
 import { useContext } from 'react';
 import CartContext from '../store/CartContext.tsx';
+import { MealItemProps } from '../types.ts';
 
 import { currencyFormatter } from '../util/formatting.ts';
-import { MealItemProps } from '../types.ts';
+
 import Button from './UI/Button.tsx';
 
 function MealItem({ meal }: MealItemProps) {
