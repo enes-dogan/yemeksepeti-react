@@ -6,13 +6,13 @@ import { HeaderProps } from '../types.ts';
 import Button from './UI/Button.tsx';
 import logoImg from '../assets/logo.jpg';
 
-function Header({ onToggleCart }: HeaderProps) {
+function Header({ onCartStatusChange }: HeaderProps) {
   const { items } = useContext(CartContext);
 
   const allItemsQuantity = items.reduce((acc, item) => acc + item.quantity!, 0);
 
-  function handleCartClick() {
-    onToggleCart();
+  function handleCartOpen() {
+    onCartStatusChange('CART');
   }
 
   return (
@@ -22,7 +22,7 @@ function Header({ onToggleCart }: HeaderProps) {
         <h1>Yemeksepeti</h1>
       </div>
       <nav>
-        <Button style="text-button" onClick={handleCartClick}>
+        <Button style="text-button" onClick={handleCartOpen}>
           Cart ({allItemsQuantity})
         </Button>
       </nav>

@@ -1,4 +1,4 @@
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useEffect } from 'react';
 import CartContext from '../store/CartContext.tsx';
 
 import { currencyFormatter } from '../util/formatting.ts';
@@ -8,28 +8,26 @@ import CartItem from './CartItem.tsx';
 import Modal from './UI/Modal.tsx';
 import Button from './UI/Button.tsx';
 
-function Cart({ cartOpen, isOpen, onToggleCart, onToggleCheckout }: CartProps) {
+function Cart({ cartStatus, onCartStatusChange }: CartProps) {
   const { items } = useContext(CartContext);
+  const dialog = useRef<ModalRef>(null);
 
   const cartTotalPrice = items.reduce(
     (acc, item) => acc + parseFloat(item.price) * item.quantity!,
     0
   );
 
-  const dialog = useRef<ModalRef>(null);
-
-  if (isOpen === 'cartOpen') {
-    dialog.current!.open();
-    onToggleCart();
-  }
+  useEffect(() => {
+    if (cartStatus === 'CART') dialog.current!.open();
+    if (cartStatus === 'CLOSE') dialog.current!.close();
+  }, [cartStatus]);
 
   function handleGoCheckout() {
-    onToggleCheckout();
-    handleCloseModal();
+    onCartStatusChange('CHECKOUT');
   }
 
   function handleCloseModal() {
-    dialog.current!.close();
+    onCartStatusChange('CLOSE');
   }
 
   return (

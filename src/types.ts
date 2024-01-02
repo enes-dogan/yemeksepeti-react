@@ -7,6 +7,8 @@ export interface MealType {
   quantity?: number;
 }
 
+export type cartStatusTypes = 'CLOSE' | 'CART' | 'CHECKOUT' | 'SUBMIT';
+
 export interface CartContextParams {
   items: MealType[] | [];
   addItem: (item: MealType) => void;
@@ -24,28 +26,24 @@ export type cartReducerFn = (
   action: cartReducerActionType
 ) => CartState;
 
-export interface HeaderProps {
-  onToggleCart: () => void;
-}
-
 export interface MealItemProps {
   meal: MealType;
 }
 
+export interface HeaderProps {
+  onCartStatusChange: (status: cartStatusTypes) => void;
+}
+
 export interface CartProps {
-  cartOpen: boolean;
-  onToggleCart: () => void;
-  onToggleCheckout: () => void;
+  cartStatus: cartStatusTypes;
+  onCartStatusChange: (status: cartStatusTypes) => void;
 }
 
 export interface CartItemProps {
   item: MealType;
 }
 
-export interface CheckoutProps {
-  goCheckout: boolean;
-  onToggleCheckout: () => void;
-}
+export interface CheckoutProps extends CartProps {}
 
 export interface ModalProps {
   children: React.ReactNode;

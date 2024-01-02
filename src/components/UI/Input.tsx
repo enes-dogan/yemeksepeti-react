@@ -5,7 +5,7 @@ function Input({ label, id, ...props }: InputProps) {
     <p className="control">
       <label htmlFor={id}>{label}</label>
 
-      <input id={id} type="text" {...props} required />
+      <input id={id} type="text" {...props} />
     </p>
   );
 }
