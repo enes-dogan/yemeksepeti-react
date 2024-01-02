@@ -1,9 +1,8 @@
-import { useRef, useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import CartContext from '../store/CartContext.tsx';
 import UserProgressContext from '../store/UserProgressContext.tsx';
 
 import { currencyFormatter } from '../util/formatting.ts';
-import { ModalRef } from '../types.ts';
 
 import Modal from './UI/Modal.tsx';
 import Input from './UI/Input.tsx';
@@ -13,17 +12,10 @@ function Checkout() {
   const { items, removeItem } = useContext(CartContext);
   const { cartStatus, onCartStatusChange } = useContext(UserProgressContext);
 
-  const dialog = useRef<ModalRef>(null);
-
   const cartTotalPrice = items.reduce(
     (acc, item) => acc + parseFloat(item.price) * item.quantity!,
     0
   );
-
-  useEffect(() => {
-    if (cartStatus === 'CHECKOUT') dialog.current!.open();
-    if (cartStatus === 'CLOSE') dialog.current!.close();
-  }, [cartStatus]);
 
   function handleCloseModal() {
     onCartStatusChange('CLOSE');
@@ -49,9 +41,37 @@ function Checkout() {
   }
 
   return (
-    <Modal ref={dialog}>
-      {cartStatus === 'SUBMIT' ? (
-        <>
+    <>
+      {cartStatus === 'CHECKOUT' ? (
+        <Modal open={cartStatus === 'CHECKOUT'}>
+          <form onSubmit={handleSubmit}>
+            <h2>Checkout</h2>
+            <p>Total Amount: {currencyFormatter.format(cartTotalPrice)}</p>
+            <Input label="Full Name" id="name" name="name" />
+            <Input
+              label="E-Mail Address"
+              id="email"
+              type="email"
+              name="email"
+            />
+            <Input label="Street" id="street" name="street" />
+            <div className="control-row">
+              <Input label="Postal Code" id="postal-code" name="postal-code" />
+              <Input label="City" id="city" name="city" />
+            </div>
+            <p className="modal-actions">
+              <Button
+                text="Close"
+                type="reset"
+                style="text-button"
+                onClick={handleCloseModal}
+              />
+              <Button text="Submit Order" type="submit" />
+            </p>
+          </form>
+        </Modal>
+      ) : (
+        <Modal open={cartStatus === 'SUBMIT'}>
           <h2>Success!</h2>
           <p>Your order was submitted successfully.</p>
           <p>
@@ -61,30 +81,9 @@ function Checkout() {
           <p className="modal-actions">
             <Button text="Okay" onClick={handleCloseModal} />
           </p>
-        </>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <h2>Checkout</h2>
-          <p>Total Amount: {currencyFormatter.format(cartTotalPrice)}</p>
-          <Input label="Full Name" id="name" name="name" />
-          <Input label="E-Mail Address" id="email" type="email" name="email" />
-          <Input label="Street" id="street" name="street" />
-          <div className="control-row">
-            <Input label="Postal Code" id="postal-code" name="postal-code" />
-            <Input label="City" id="city" name="city" />
-          </div>
-          <p className="modal-actions">
-            <Button
-              text="Close"
-              type="reset"
-              style="text-button"
-              onClick={handleCloseModal}
-            />
-            <Button text="Submit Order" type="submit" />
-          </p>
-        </form>
+        </Modal>
       )}
-    </Modal>
+    </>
   );
 }
 
