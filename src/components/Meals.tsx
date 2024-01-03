@@ -1,28 +1,21 @@
-import { useState, useEffect } from 'react';
-import { MealType } from '../types.ts';
+import useHttp from '../hooks/useHttp.ts';
 
 import MealItem from './MealItem.tsx';
 
+const reqConfig: { method: 'GET' } = {
+  method: 'GET',
+};
+
 function Meals() {
-  const [meals, setMeals] = useState<MealType[]>([]);
+  const { fetchedData: meals, isFetching } = useHttp('meals', reqConfig);
 
-  useEffect(() => {
-    async function fetchMeals() {
-      const response = await fetch('http://localhost:3000/meals');
-
-      if (response.ok) {
-        const resData = await response.json();
-
-        setMeals(resData);
-      }
-    }
-    fetchMeals();
-  }, []);
+  if (isFetching) {
+    return <p className="center">Loading Meals..</p>;
+  }
 
   return (
     <ul id="meals">
-      {meals.length > 0 &&
-        meals.map(meal => <MealItem key={meal.id} meal={meal} />)}
+      {!isFetching && meals.map(meal => <MealItem key={meal.id} meal={meal} />)}
     </ul>
   );
 }

@@ -25,12 +25,12 @@ function Checkout() {
     event.preventDefault();
 
     const fd = new FormData(event.target as HTMLFormElement);
-    const customerData = Object.fromEntries(fd.entries());
+    const customer = Object.fromEntries(fd.entries());
 
     fetch('http://localhost:3000/orders', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({ order: { items: items, customer: customerData } }),
+      body: JSON.stringify({ order: { items, customer } }),
     });
 
     items.forEach(item => {
