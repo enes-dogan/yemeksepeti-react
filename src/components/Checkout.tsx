@@ -43,35 +43,33 @@ function Checkout() {
   return (
     <>
       {cartStatus === 'CHECKOUT' ? (
-        <Modal open={cartStatus === 'CHECKOUT'}>
+        <Modal
+          open={cartStatus === 'CHECKOUT'}
+          onClose={cartStatus === 'CHECKOUT' ? handleCloseModal : () => {}}
+        >
           <form onSubmit={handleSubmit}>
             <h2>Checkout</h2>
             <p>Total Amount: {currencyFormatter.format(cartTotalPrice)}</p>
-            <Input label="Full Name" id="name" name="name" />
-            <Input
-              label="E-Mail Address"
-              id="email"
-              type="email"
-              name="email"
-            />
-            <Input label="Street" id="street" name="street" />
+            <Input label="Full Name" id="name" />
+            <Input label="E-Mail Address" id="email" type="email" />
+            <Input label="Street" id="street" />
             <div className="control-row">
-              <Input label="Postal Code" id="postal-code" name="postal-code" />
-              <Input label="City" id="city" name="city" />
+              <Input label="Postal Code" id="postal-code" />
+              <Input label="City" id="city" />
             </div>
             <p className="modal-actions">
-              <Button
-                text="Close"
-                type="reset"
-                style="text-button"
-                onClick={handleCloseModal}
-              />
+              <Button style="text-button" onClick={handleCloseModal}>
+                Close
+              </Button>
               <Button text="Submit Order" type="submit" />
             </p>
           </form>
         </Modal>
       ) : (
-        <Modal open={cartStatus === 'SUBMIT'}>
+        <Modal
+          open={cartStatus === 'SUBMIT'}
+          onClose={cartStatus === 'SUBMIT' ? handleCloseModal : () => {}}
+        >
           <h2>Success!</h2>
           <p>Your order was submitted successfully.</p>
           <p>

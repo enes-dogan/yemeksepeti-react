@@ -43,6 +43,7 @@ export interface ModalProps {
   children: React.ReactNode;
   cssClasses?: string;
   open: boolean;
+  onClose: () => void;
 }
 
 export interface InputProps

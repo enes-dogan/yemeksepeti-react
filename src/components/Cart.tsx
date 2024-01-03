@@ -26,7 +26,11 @@ function Cart() {
   }
 
   return (
-    <Modal cssClasses="cart" open={cartStatus === 'CART'}>
+    <Modal
+      cssClasses="cart"
+      open={cartStatus === 'CART'}
+      onClose={cartStatus === 'CART' ? handleCloseModal : () => {}}
+    >
       <h2>Your Cart</h2>
       <ul>
         {items.map(item => (
