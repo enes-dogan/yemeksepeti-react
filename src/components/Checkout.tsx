@@ -25,11 +25,13 @@ function Checkout() {
     event.preventDefault();
 
     const fd = new FormData(event.target as HTMLFormElement);
-    const customer = Object.fromEntries(fd.entries());
+    const customerData = Object.fromEntries(fd.entries());
 
-    const order = { ...items, customer, id: Math.random() * 100 };
-
-    console.log(order);
+    fetch('http://localhost:3000/orders', {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({ order: { items: items, customer: customerData } }),
+    });
 
     items.forEach(item => {
       for (let i = 0; i < item.quantity!; i++) {
