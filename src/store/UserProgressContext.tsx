@@ -10,7 +10,7 @@ const UserProgressContext = createContext<UserProgressContextType>({
   onCartStatusChange: () => {},
 });
 
-export function UserProgressContextProdiver({ children }: childrenProp) {
+export function UserProgressContextProvider({ children }: childrenProp) {
   const [cartStatus, setCartStatus] = useState<cartStatusTypes>('CLOSE');
 
   function onCartStatusChange(status: cartStatusTypes) {

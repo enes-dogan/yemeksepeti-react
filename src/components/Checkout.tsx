@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 import CartContext from '../store/CartContext.tsx';
 import UserProgressContext from '../store/UserProgressContext.tsx';
+import useHttp from '../hooks/useHttp.ts';
+import { configType } from '../types.ts';
 
 import { currencyFormatter } from '../util/formatting.ts';
 
@@ -8,9 +10,19 @@ import Modal from './UI/Modal.tsx';
 import Input from './UI/Input.tsx';
 import Button from './UI/Button.tsx';
 
+const reqConfig: configType = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+};
+
 function Checkout() {
   const { items, removeItem } = useContext(CartContext);
   const { cartStatus, onCartStatusChange } = useContext(UserProgressContext);
+
+  const { isFetching: isSending, sendRequest } = useHttp(
+    'http://localhost:3000/orders',
+    reqConfig
+  );
 
   const cartTotalPrice = items.reduce(
     (acc, item) => acc + parseFloat(item.price) * item.quantity!,
@@ -27,10 +39,11 @@ function Checkout() {
     const fd = new FormData(event.target as HTMLFormElement);
     const customer = Object.fromEntries(fd.entries());
 
-    fetch('http://localhost:3000/orders', {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({ order: { items, customer } }),
+    sendRequest({
+      order: {
+        items,
+        customer,
+      },
     });
 
     items.forEach(item => {
@@ -42,9 +55,22 @@ function Checkout() {
     onCartStatusChange('SUBMIT');
   }
 
+  let actions = (
+    <>
+      <Button style="text-button" onClick={handleCloseModal}>
+        Close
+      </Button>
+      <Button text="Submit Order" type="submit" />
+    </>
+  );
+
+  if (isSending) {
+    actions = <span>Sending order...</span>;
+  }
+
   return (
     <>
-      {cartStatus === 'CHECKOUT' ? (
+      {cartStatus === 'CHECKOUT' && (
         <Modal
           open={cartStatus === 'CHECKOUT'}
           onClose={cartStatus === 'CHECKOUT' ? handleCloseModal : () => {}}
@@ -59,15 +85,11 @@ function Checkout() {
               <Input label="Postal Code" id="postal-code" />
               <Input label="City" id="city" />
             </div>
-            <p className="modal-actions">
-              <Button style="text-button" onClick={handleCloseModal}>
-                Close
-              </Button>
-              <Button text="Submit Order" type="submit" />
-            </p>
+            <p className="modal-actions">{actions}</p>
           </form>
         </Modal>
-      ) : (
+      )}
+      {cartStatus === 'SUBMIT' && (
         <Modal
           open={cartStatus === 'SUBMIT'}
           onClose={cartStatus === 'SUBMIT' ? handleCloseModal : () => {}}

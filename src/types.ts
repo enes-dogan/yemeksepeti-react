@@ -31,23 +31,39 @@ export type cartReducerFn = (
   action: cartReducerActionType
 ) => CartState;
 
-export type useHttpHookFn = (
-  url: 'meals' | 'orders',
-  config: configType
-) => useHttpFnReturn;
+export type urlType =
+  | 'http://localhost:3000/meals'
+  | 'http://localhost:3000/orders';
 
-export interface configType {
-  method: 'GET' | 'POST';
-  headers?: {
-    'Content-Type': 'application/json';
+export type configType =
+  | {
+      method: 'POST';
+      headers: {
+        'Content-Type': 'application/json';
+      };
+      body?: SendRequestData;
+    }
+  | { method: 'GET' };
+
+export interface SendRequestData {
+  order: {
+    items: MealType[];
+    customer: {
+      [k: string]: FormDataEntryValue;
+    };
   };
 }
 
+export type useHttpHookFn = (
+  url: urlType,
+  config: configType
+) => useHttpFnReturn;
+
 export interface useHttpFnReturn {
   isFetching: boolean;
-  error: undefined;
+  error: { message: string };
   fetchedData: MealType[];
-  sendRequest: () => void;
+  sendRequest: (data: SendRequestData) => void;
 }
 
 export interface MealItemProps {
@@ -76,6 +92,11 @@ export interface ButtonProps {
   type?: 'button' | 'submit' | 'reset' | undefined;
   style?: 'text-button';
   onClick?: () => void;
+}
+
+export interface ErrorProps {
+  title: string;
+  message: string;
 }
 
 export interface childrenProp {
